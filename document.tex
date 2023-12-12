@@ -1,0 +1,396 @@
+\documentclass{beamer}
+
+%\documentclass[envcountsect]{beamer}
+
+
+\usepackage[english]{babel}
+\usefonttheme[onlymath]{serif}
+
+\usetheme{Hyderabad}
+
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{amssymb,amsmath}
+\usepackage{tikz}
+\usepackage{epstopdf}
+\graphicspath{{./../Figures/}}
+\DeclareGraphicsExtensions{.jpeg,.png,.jpg,.eps,.pdf}
+
+\input{colordef.tex}
+\input{notation.tex}
+
+\def\Mh{\hat{M}}
+\def\vbh{\hat{\v}}
+
+% \newcommand{\btp}{\begin{tikzpicture}}
+	% \newcommand{\etp}{\end{tikzpicture}}
+
+\setlength{\parskip}{2mm}
+
+\setbeamertemplate{theorems}[numbered]
+
+\def\ft{\frametitle}
+\def\bfr{\begin{frame}}
+	\def\efr{\end{frame}}
+
+% Notation specifically for this file.
+\def\m{\tilde{m}}
+\def\trm{Tr_1^{\bar{m}}}
+\def\trl{Tr_1^{l}}
+
+
+\def\bu{\bullet}
+
+\AtBeginSection[]
+{
+	\begin{frame}<beamer>[allowframebreaks]{Outline}
+		\tableofcontents[currentsection={1-2},currentsubsection]
+		\framebreak
+		\tableofcontents[currentsection={3-4},currentsubsection]
+	\end{frame}
+}
+
+%\AtBeginSection[]
+%{
+%	\begin{frame}<beamer>{Outline}
+%		\tableofcontents[currentsection,currentsubsection]
+%	\end{frame}
+%}
+%
+%\AtBeginSubsection[]
+%{
+%	  \begin{frame}<beamer>{Outline}
+%		    \tableofcontents[currentsection,currentsubsection]
+%		  \end{frame}
+%	}
+
+\logo{\includegraphics[height=0.5cm]{IITH-logo.jpg}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% new
+\makeatletter
+\setbeamertemplate{footline}{%
+	\leavevmode%
+	\hbox{%
+		\begin{beamercolorbox}[wd=.30\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+			\usebeamerfont{author in head/foot}\insertshortauthor%~~\beamer@ifempty{\insertshortinstitute}{}{(\insertshortinstitute)}
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.70\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+			\usebeamerfont{title in head/foot}\insertshorttitle
+	\end{beamercolorbox}}%
+	\vskip0pt%
+}
+\makeatother
+
+\addtobeamertemplate{navigation symbols}{}{%
+	\usebeamerfont{footline}%
+	\usebeamercolor[fg]{footline}%
+	\hspace{1em}%
+	\insertframenumber/\inserttotalframenumber
+}
+
+%\expandafter\def\expandafter\insertshorttitle\expandafter{%
+	%	\insertshorttitle\hfill%
+	%	\insertframenumber\,/\,\inserttotalframenumber}
+
+\begin{document}
+	\title
+	{  
+		Deterministic Construction of Binary and Bipolar
+		Measurement Matrices Using BCH Codes
+	}
+	%\author[]{Shashank Ranjan}
+	%\institute{Systems and Control\\
+		%	Indian Institute of Technology Hyderabad\\
+		%}
+	\author[S. Ranjan, M. Vidyasagar FRS]{Shashank Ranjan\inst{1} \and Dr. M. Vidyasagar FRS \inst{2}}
+	\institute {\inst{1} PhD Scholar, IIT Hyderabad \and %
+		\inst{2} SERB National Science Chair and Distinguished Professor, IIT Hyderabad}
+	\date{\today}
+	
+	\maketitle
+	
+	% \bfr{Outline}
+	
+	% \tableofcontents
+	
+	% \end{frame}
+
+
+\section{Introduction}
+\subsection{Overview}
+\bfr
+
+Compressed sensing refers to the recovery of high-dimensional but
+low-complexity data from a small number of linear measurements.
+
+Two common applications
+
+\begin{itemize}
+	\item Vector Recovery: Reconstruct a high-dimensional but sparse
+	(or nearly sparse) vector.
+	\item Matrix Recovery: Reconstruct a high-dimensional but low rank
+	matrix.
+\end{itemize}
+
+
+\end{frame}
+
+\subsection{Problem formulation for vector recovery}
+\bfr
+\begin{itemize}
+% \item In Compressed Sensing we have a sparse vector $x\in\R^n$.
+\item The objective is to recover a sparse or a nearly sparse vector $x \in \R^n$ 
+from a lower-dimentional measurment vector
+\bd
+y=Ax+\eta ,
+\ed 
+where $A\in\Rmn \ (m<n)$ is called the measurement matrix,
+and $\eta\in\R^m$ is the measurement noise with 
+a known upper bound $\nmeu{\eta}\leq \e$.
+\item In order to recover $x$, we need a decoder map 
+$\Delta : \R^{m}\rightarrow \R^{n}$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+
+\begin{itemize}
+
+\item Let $\SI_k \seq \R^n$ denote the set of $k$-sparse vectors, that is,
+the set of vectors with no more than $k$ nonzero components.
+
+Given a norm $\nmm{\cdot}$, let
+\bd
+\s_k(x, \nmm{\cdot}) := \min_{z \in \SI_k} \nmm{x-z}
+\ed
+denote the $k$-sparsity index of $x$, which measures how close $x$ is to
+being sparse.
+
+\item The decoder map $(\D)$ which is widely used in the 
+recovery of $x$ is the \textbf{Basis pursuit} decoder map \textbf{$(\D_{BP})$} i.e.,
+\be\label{eq:1}
+\DBP(y) := \argmin_z \nmm{z}_1 \st \nmeu{y - Az} \leq \e .
+\ee
+\end{itemize}
+
+
+
+\end{frame}
+
+\begin{frame}
+
+\begin{definition}\label{def:1}
+The pair $(A, \DBP)$ is said achieve \textbf{robust sparse recovery} 
+of order $k$ if, there exists constants $C$ and $D$ such that for all 
+$\eta\in\R^m$ with $\nmeu{\eta}\leq \e$, the following inequality holds
+\be\label{eq:2}
+\nmm{ \DBP(Ax + \eta) - x}_p \leq C \s_k( x , \nmm{\cdot}_1 )
++ D \e , \fa x \in \R^n .
+\ee
+\end{definition}
+The usual choices for $p$ in \eqref{eq:2} are $p = 1$ and $p = 2$.
+
+There are two widely used sufficient 
+conditions on the matrix $A$ that enable robust sparse recovery; namely,
+\textbf{Restricted Isometry Property (RIP)} and
+\textbf{Robust Null Space Property (RNSP)}.
+\end{frame}
+
+\subsection{Definitions of RIP and RSNP}
+
+\bfr
+
+\begin{definition}\label{def:2}
+A matrix $A\in\Rmn$ is said to satisfy the \textbf{restricted isometry 
+	property (RIP)} of order $k$ with constant $\d_k\in(0,1)$ if
+\be\label{eq:3}
+(1 - \d_k) \nmeusq {u} \leq \nmeusq { Au} \leq (1 + \d_k) \nmeusq {u} ,
+\fa u \in \SI_k .
+\ee
+\end{definition}
+
+\begin{definition}\label{def:3}
+A matrix $A\in\Rmn$ is said to satisfy \textbf{robust null space property (RNSP)} 
+of order $k$ with constants $\r\in(0,1)$ and $\t>0$ if, for all $S\seq[n]$ with 
+$|S|\leq k$, it is the case that
+\be\label{eq:4}
+\nmm{h_S}_1 \leq \r \nmm{h_{S^c} }_1 + \t \nmeu{Ah} , \fa h \in \R^n .
+\ee
+\end{definition}
+
+\end{frame}
+
+\subsection{Known result}
+\bfr   
+Ranjan and Vidyasagar, IEEE T-SP, 2019: RIP implies RNSP. 
+\begin{theorem}\label{thm:4}
+Suppose $A\in\Rmn$ satisfies $RIP$ of 
+order $tk$ with $\d_{tk} < \sqrt{(t-1)/t}$ for some $t>1$. Define
+\bd
+v:=\sqrt{t(t-1)}-(t-1)\in (0,0.5)
+\ed 
+\bd
+a:=[v(1-v)-\d(0.5-v+v^2)]^{1/2},
+\ed
+\bd
+b:=v(1-v)\sqrt{1+\d},\ c:=\Big[\frac{\d v^2}{2(t-1)}\Big]^{1/2}.
+\ed
+Then $A$ satisfies robust null space property of order $k$ with 
+\bd
+\r:=\frac{c}{a},\ \t:=\sqrt{k}\frac{b}{a^2}.
+\ed
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+% $RIP$ implies $RNSP$ \cite[Theorem 9]{my}
+\begin{itemize}
+
+\item This finding lead to the conclusion that RNSP is a weaker condition than RIP.
+
+\item Subsequent to this result, in a recent work, Lotfi and Vidyasagar
+have proposed a class of binary matrices that directly satisfy RNSP
+while bypassing RIP.
+
+\item They have also shown that the value of $k$ for which
+the RNSP is guaranteed to hold is $3 \sqrt{3}/2 \approx 2.6$ times larger
+than for the RIP.
+\end{itemize}
+
+
+\end{frame}
+
+\subsection{Abstract of our work}
+\bfr
+\bit
+\item We present a deterministic construction method for
+designing the binary and bipolar compressed sensing 
+matrices based on BCH codes.
+
+\item  In our work, we adopt the methodology used
+in the construction of binary matrices proposed by
+Lotfi and Vidyasagar. Therefore, the matrices proposed
+here directly satisfy the RNSP while
+bypassing the RIP.
+
+\item For the matrices proposed here, 
+the value of $k$ for which the RNSP is guaranteed to hold is 
+at least $1.3$ times larger than for the RIP.
+
+
+
+\eit 
+\end{frame}
+
+\bfr
+
+\bit
+
+\item If $k$ is of the form $2^i$, where $i\in\mathbb{N}$, then
+for below two cases
+\begin{multline}\label{eq:5}
+\frac{1}{2}\Bigl(\sqrt[3]{n+\sqrt{n^2-1/27}}+ \sqrt[3]{n-\sqrt{n^2-1/27}}\,\Bigr) \\
+\leq k < \frac{1}{8} \Bigl(\sqrt{n}+\sqrt{n+16(\sqrt{n}+1)}\,\Bigr)
+\end{multline}
+
+
+\be\label{eq:6}
+k \leq \frac{\sqrt[3]{n}}{2.83},
+\ee
+the matrices proposed by us require fewer 
+number of measurements than the binary matrices proposed
+by Lotfi and Vidyasagar.
+\eit
+\end{frame}
+
+\section{BCH Codes}
+\subsection{An overview of linear codes}
+
+\bfr
+
+\bit
+
+\item A binary inear code denoted by $[\tilde{n},\tilde{k},d_{min}]_2$ 
+is a linear subspace $\C \seq \Fbb_2^{\tilde{n}}$ of 
+dimension $\tilde{k}$, where $\Fbb_2$ denotes the binary field,
+and $\tilde{n}$ is the code length.
+
+
+\item $|\C| = 2^{\tilde{k}}$
+
+\item The elements of $\C$ are called codewords.
+
+\item The \textbf{weight} of a codeword is the number of its 
+non-zero elements.
+
+\item The \textbf{distance} $d_{min}$ of a linear code 
+is the minimum weight of its non-zero codewords.
+
+\item  if vector $\oneb_m$ 
+consisting of all ones is a codeword,
+then $\C$ is said to be \textbf{symmetric}.
+
+\item $\C$ is said to be cyclic if for every codeword,
+its circular shif is also a valid codeword.
+
+\eit
+
+\end{frame}
+
+\subsection{Narrow-sense primitive binary BCH codes}
+
+\bfr
+\begin{itemize}
+	
+\item Narrow-sense primitive binary BCH codes are a class of cyclic 
+binary codes with $\tilde{n}= 2^{\m} -1$ ( $\m$ is a positive integer) 
+which are produced by a generating polynomial $g(x)\in GF(2)[x]$                          
+such that $g(x)\mid  x^{2^{\m}-1}+1$.
+
+
+
+\item In our work, when we say that a BCH code has the designed
+distance $d$, we mean that 
+$\al^1,\ \al^2,\ \dotsc ,\al^{d-1}$ are different non-repeating roots of $g(x)$
+( not necessarily all the roots), and $(x+1)\nmid g(x)$, where $\al\in GF(2^{\m})$ 
+is a primitive root of the field.
+
+\item Here, $d_{min}\geq d$. Since $(x+1)\nmid g(x)$, the code
+will be symmetric. Which means for every codeword its complement
+will aslo be a valid codeword. 
+
+\item Since, $\tilde{n}$ is odd, each complement couple will have
+one even parity codeword and one odd parity codeword.
+\end{itemize}                        
+\end{frame}
+
+\section{An earlier construction based on BCH codes}
+
+\bfr
+
+\textbf{Amini and Marvasti, IEEE T-IT, 2011}
+
+\begin{theorem}\label{thm:5}
+Let $\C:= [\tilde{n},\ \tilde{k}, d_{min}]_2$ be a symmetric code.
+Let $B\in \{0,1\}^{\tilde{n}\times 2^{\tilde{k}-1}}$ be the matrix composed
+of code vectors as its column such that such that from each complement couple,
+exactly one is selected. Define
+\be\label{eq:7}
+A = \frac{1}{\sqrt{\tilde{n}}}\Big(2 B - \oneb_{\tilde{n}\times 2^{\tilde{k}-1}}\Big).
+\ee
+Then $A$ satisfies the RIP with constant $\d_k = (k-1)\ (1-2\frac{d_{min}}{\tilde{n}})$
+for $k< \frac{\tilde{n}}{\tilde{n}-2 d_{min}} + 1$ ( $k$ is the RIP order).
+\end{theorem}
+
+The authors used BCH code in their construction.
+
+\end{frame}
+
+\section{New construction method utilizing the known weight distribution of BCH codes}
+\bfr
+
+\begin{itemize}
+	\item
+\end{itemize}
+\end{frame}
+\end{document}

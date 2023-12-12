@@ -1,0 +1,64 @@
+% This file is a modification of beamercolorthemeMVouter to suit IITH.
+% The date is 29.12.14.
+
+% Experimenting with the UTD colors as officially defined.
+% This is the file MVouter with color definitions.
+% This file modifies the outer color theme "whale".
+% The date is 13.02.10.
+% It still needs some work in terms of getting the orange and green just right.
+
+% Copyright 2007 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/licenses/LICENSE for more details.
+
+% \ProvidesPackageRCS $Header: /cvsroot/latex-beamer/latex-beamer/themes/color/beamercolorthemewhale.sty,v 1.4 2007/01/28 20:48:24 tantau Exp $
+
+\ProvidesPackageRCS $Header: /cvsroot/latex-beamer/latex-beamer/themes/color/beamercolorthemeMVouter.sty,v 1.4 2007/01/28 20:48:24 tantau Exp $
+
+
+\mode<presentation>
+
+% \setbeamercolor*{palette primary}{use=structure,fg=white,bg=structure.fg}
+% \setbeamercolor*{palette primary}{use=structure,fg=white,bg=green}
+
+% Defining IITH colors to be IITHred and IITHyellow based on their logo.
+
+% \definecolor{IITHyellow}{rgb}{1.00,0.65,0.00}
+% \definecolor{IITHorange}{rgb}{1.00,0.40,0.00}
+% 
+% % Changing the palette compositions.
+% \setbeamercolor*{palette primary}{use=structure,fg=white,bg=IITHyellow}
+% \setbeamercolor*{palette secondary}{use=structure,fg=white,bg=IITHorange}
+% \setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=IITHorange}
+% \setbeamercolor*{palette quaternary}{fg=white,bg=IITHorange}
+% 
+\definecolor{IITHred}{cmy}{0,0.80,1.00}
+\definecolor{IITHorange}{cmy}{0,0.60,1.00}
+\definecolor{IITHyellow}{cmy}{0,0.40,1.00}
+
+% Changing the palette compositions.
+\setbeamercolor*{palette primary}{use=structure,fg=white,bg=IITHred}
+\setbeamercolor*{palette secondary}{use=structure,fg=white,bg=IITHorange}
+\setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=IITHorange}
+\setbeamercolor*{palette quaternary}{fg=white,bg=IITHorange}
+
+
+\setbeamercolor*{sidebar}{use=structure,bg=structure.fg}
+  
+\setbeamercolor*{palette sidebar primary}{use=structure,fg=structure.fg!90}
+\setbeamercolor*{palette sidebar secondary}{fg=white}
+\setbeamercolor*{palette sidebar tertiary}{use=structure,fg=structure.fg!50}
+\setbeamercolor*{palette sidebar quaternary}{fg=white}
+
+\setbeamercolor*{titlelike}{parent=palette primary}
+
+\setbeamercolor*{separation line}{}
+\setbeamercolor*{fine separation line}{}
+
+\mode
+<all>
